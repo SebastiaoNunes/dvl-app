@@ -1,10 +1,13 @@
 package com.dvlcube.app.jpa.repo;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import com.dvlcube.app.manager.data.SkillBean;
 import com.dvlcube.app.jpa.BasicRepository;
 import com.dvlcube.app.jpa.DvlRepository;
+
+import java.util.List;
 
 /**
  * @since 4 de jun de 2019
@@ -12,4 +15,6 @@ import com.dvlcube.app.jpa.DvlRepository;
  */
 @Repository
 public interface SkillRepository extends DvlRepository<SkillBean, Long>, BasicRepository<SkillBean, Long> {
+
+    List<SkillBean> findByName(String name, Sort sort);
 }

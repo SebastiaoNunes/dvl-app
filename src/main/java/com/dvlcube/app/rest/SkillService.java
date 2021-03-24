@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.dvlcube.utils.RequestHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,10 +38,18 @@ public class SkillService implements MxFilterableBeanService<SkillBean, Long> {
 	@Autowired
 	private SkillRepository repo;
 
+	public static final String  FILTER_NAME = "name";
+
 	@Override
 	@GetMapping
 	public Iterable<SkillBean> get(@RequestParam Map<String, String> params) {
-		return repo.findAll(Sort.by(Sort.Direction.ASC, "name"));
+		RequestHelper requestHelper = RequestHelper.create(params);
+
+		if (requestHelper.hasFilter()) {
+			return repo.findByName(requestHelper.getParamater(FILTER_NAME), Sort.by(Sort.Direction.ASC, FILTER_NAME));
+		}
+
+		return repo.findAll(Sort.by(Sort.Direction.ASC, FILTER_NAME));
 	}
 
 	@Override
